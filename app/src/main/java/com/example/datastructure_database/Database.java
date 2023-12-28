@@ -127,18 +127,26 @@ public class Database <T> implements Serializable {
 
 
 
-        public void clear(){
-            Node<T> temp= head;
-            while(temp!=null){
-                Node <T> next= temp.next;
+        public boolean clear(){
 
-                //ENSURE ALL MEMORY IS CLEARED RATHER THAN INSTANTIATING HEAD AND TAIL NULL
-                temp.prev=null;
-                temp.next=null;
-                temp= next;
+            try{
+                Node<T> temp= head;
+                while(temp!=null){
+                    Node <T> next= temp.next;
+
+                    //ENSURE ALL MEMORY IS CLEARED RATHER THAN INSTANTIATING HEAD AND TAIL NULL
+                    temp.prev=null;
+                    temp.next=null;
+                    temp= next;
+                }
+                head=null;
+                tail=null;
+
+                return true;
+            }catch(Exception e){
+                System.out.println(e);
             }
-            head=null;
-            tail=null;
+            return false;
         }
 
     }

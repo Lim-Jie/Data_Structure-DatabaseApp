@@ -146,6 +146,7 @@ public class DatabaseQueryAction extends Fragment {
             boolean errorOccurred = false;
 
             if (actionOfDatabase.equals("Insert")) {
+                //INSERT DATABASE ACTION
                 if (!AreValuesAndIndexFilled()) {
                     requirements.setText("Please Fill in Both Index and Values for Insertion");
                     errorOccurred = true;
@@ -169,13 +170,23 @@ public class DatabaseQueryAction extends Fragment {
                         result.setText("Index already Exists, try another index");
                     } else {
                         SetTextEmpty();
-                        Toast.makeText(getContext(), "Successfully inserted index: " + IndexValue.getText().toString(), Toast.LENGTH_SHORT).show();
-                    }
+                        Toast.makeText(getContext(), "Successfully inserted index: " + IndexValue.getText().toString(), Toast.LENGTH_SHORT).show();}
+
                 }
             } else if (actionOfDatabase.equals("Display")) {
+                //DISPLAY DATABASE ACTION
+
                 database.Display();
+                Toast.makeText(getContext(), "Successfully displayed the database", Toast.LENGTH_SHORT).show();
+
             } else if (actionOfDatabase.equals("Clear")) {
-                database.clear();
+                //CLEAR DATABASE ACTION
+
+                if(database.clear()){
+                    Toast.makeText(getContext(), "Successfully clear the database", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getContext(), "Error in Clear database ", Toast.LENGTH_SHORT).show();}
+
             } else {
                 requirements.setText("Enter a valid Action");
             }
