@@ -4,6 +4,10 @@ import android.util.Log;
 import android.widget.ListView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Database <T> implements Serializable {
     public static class Node <T> implements Serializable{
@@ -125,6 +129,32 @@ public class Database <T> implements Serializable {
         }
 
 
+
+        public List <Map<String,Object>> getHashMapValues(){
+
+           List <Map <String,Object>>listMap = new ArrayList<>();
+
+
+
+            if(head==null){
+                //EMPTY DATABASE
+                return null;
+            }else{
+                Node<T> temp = head;
+
+                while(temp!=null){
+                    Map <String,Object> map = new HashMap<>();
+                    map.put("Index", temp.index.toString());
+                    map.put("ValueType", temp.type.toString());
+                    map.put("Value", temp.element.toString());
+                    temp=temp.next;
+
+                    listMap.add(map);
+                }
+            }
+            Log.d("listview","Values:" + listMap);
+            return listMap;
+        }
 
 
         public boolean clear(){

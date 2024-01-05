@@ -15,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioGroup;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -27,6 +29,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class DatabaseQueryAction extends Fragment {
     Button Enter;
@@ -38,6 +43,7 @@ public class DatabaseQueryAction extends Fragment {
     TextView requirements;
     RadioGroup radioGroup;
     String returnValueType;
+    ListView listView;
 
     String actionOfDatabase;
     MaterialButtonToggleGroup toggleGroup;
@@ -177,6 +183,8 @@ public class DatabaseQueryAction extends Fragment {
                 //DISPLAY DATABASE ACTION
 
                 database.Display();
+                DisplayDatabase(view);
+
                 Toast.makeText(getContext(), "Successfully displayed the database", Toast.LENGTH_SHORT).show();
 
             } else if (actionOfDatabase.equals("Clear")) {
@@ -198,6 +206,9 @@ public class DatabaseQueryAction extends Fragment {
 
 
 
+
+
+
         //AFTER EVERY ACTION, PLEASE USE THIS TO SAVE THE DATABASE CHANGES TO PREVENT LOSS OF UPDATE
         SaveDatabaseObjectState(getContext(), database);
 
@@ -212,6 +223,28 @@ public class DatabaseQueryAction extends Fragment {
         Log.d("SavedState", "Successfully saved object in OnDestroy()");
     }
 
+
+    public void DisplayDatabase(View view){
+        List<Map <String, Object>> listMap = database.getHashMapValues();
+
+            if(listMap!=null){
+                listView = view.findViewById(R.id.ListViewDatabase);
+                String[] from = {"ValueType", "Value","Index"};
+                int[] to = {R.id.ValueType, R.id.Value, R.id.Index};
+
+                SimpleAdapter adapter = new SimpleAdapter(
+                        getContext(),
+                        listMap,
+                        R.layout.listview_item,
+                        from,
+                        to
+                );
+
+                listView.setAdapter(adapter);
+            }else{
+                Log.e("ListView", "ListView is null");
+            }
+    }
 
 
     public static void SaveDatabaseObjectState(Context context, Database database) {
@@ -259,6 +292,9 @@ public class DatabaseQueryAction extends Fragment {
         requirements.setText("");
         result.setText("");
     }
+
+
+
 
 
 

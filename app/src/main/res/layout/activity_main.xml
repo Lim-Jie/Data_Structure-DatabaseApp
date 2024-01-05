@@ -23,34 +23,5 @@
 
 
        </androidx.constraintlayout.widget.ConstraintLayout>
-       <androidx.constraintlayout.widget.ConstraintLayout
-           android:layout_width="match_parent"
-           android:layout_height="500dp">
-           <!--DISPLAY DATABASE CONSTRAINT LAYOUT UI  -->
-
-
-
-
-
-
-
-
-
-
-
-       </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-
    </LinearLayout>
 </ScrollView>
