@@ -84,8 +84,8 @@ public class DatabaseQueryAction extends Fragment {
         radioGroup= (RadioGroup) view.findViewById(R.id.RadioGroupAction);
         Enter = view.findViewById(R.id.Enter);
         toggleGroup = view.findViewById(R.id.InsertAction);
-        IndexValue = view.findViewById(R.id.IndexValue);
-        InputValue = view.findViewById(R.id.Value);
+        IndexValue = view.findViewById(R.id.IndexEditText);
+        InputValue = view.findViewById(R.id.ValueEditText);
         result = view.findViewById(R.id.Result);
         requirements = view.findViewById(R.id.RequirementsText);
 
@@ -158,6 +158,11 @@ public class DatabaseQueryAction extends Fragment {
                     errorOccurred = true;
                 }
 
+                if(!IsIndexValid(IndexValue.getText().toString())){
+                    requirements.setText("Index requires minimum of 4 alphabetical and numeric characters");
+                    errorOccurred = true;
+                }
+
                 if (!IsToggleButtonActivated()) {
                     requirements.setText("Please select data type to insert");
                     errorOccurred = true;
@@ -194,6 +199,23 @@ public class DatabaseQueryAction extends Fragment {
                     Toast.makeText(getContext(), "Successfully clear the database", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getContext(), "Error in Clear database ", Toast.LENGTH_SHORT).show();}
+
+            } else if (actionOfDatabase.equals("Delete")) {
+
+                if(database.delete(IndexValue.getText().toString())){
+                    Toast.makeText(getContext(), "Successfully deleted index in the database "+IndexValue.getText().toString(), Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getContext(), "Error in deleting index database "+IndexValue.getText().toString(), Toast.LENGTH_SHORT).show();}
+
+
+            } else if (actionOfDatabase.equals("Retrieve")) {
+                String RetrievedValue= database.get(IndexValue.getText().toString());
+                if(RetrievedValue!=null){
+                    result.setText(RetrievedValue);
+                    Toast.makeText(getContext(), "Successfully retrieved index:  "+IndexValue.getText().toString(), Toast.LENGTH_SHORT).show();
+
+            }else{
+                    Toast.makeText(getContext(), "Error in retrieving index database "+IndexValue.getText().toString(), Toast.LENGTH_SHORT).show();}
 
             } else {
                 requirements.setText("Enter a valid Action");
@@ -370,6 +392,14 @@ public class DatabaseQueryAction extends Fragment {
         return false;
     }
 
+
+    public boolean IsIndexValid(String value){
+        String checker = value.replaceAll("[^a-zA-Z0-9]","");
+        if(checker.length()>3){
+            return true;
+        }
+        return false;
+    }
 
 
 

@@ -43,12 +43,53 @@ public class Database <T> implements Serializable {
         }
 
 
-        public void get(String index){
-            //TODO: Rachel Lim (Get At least 1 value)
+        public String get(String index){
+            String ValueFound=null;
+            Node<T> temp=head;
+
+            if(head==null){
+                Log.d("get()","Head is returning null");
+                return ValueFound;
+            }else{
+                while(temp!=null){
+                    String CurrentIndex= temp.index;
+
+                    if(CurrentIndex.equals(index.trim())){
+                        ValueFound=temp.element.toString();
+                        Log.d("getElement()", "Element found in Index"+temp.index);
+                        return ValueFound;
+                    }
+                    temp=temp.next;
+                }
+
+            }
+            return ValueFound;
         }
 
-        public void delete(String index ){
-            //TODO: Rachel Lim (Delete 1 value)
+        public boolean delete(String index ){
+            Node<T> temp=head;
+
+            if(head==null){
+                Log.d("Delete()","Head is returning null");
+                return false;
+            }else{
+                while(temp!=null){
+                    String CurrentIndex= temp.index;
+
+                    if(CurrentIndex.equals(index.trim())){
+                        Log.d("delete()", "Element found in Index"+temp.index);
+                        temp.prev.next=temp.next;
+                        temp.next.prev= temp.prev;
+                        temp=null;
+                        Log.d("delete()", "Successfully deleted"+temp.index+" with value "+temp.element);
+
+                        return true;
+                    }
+                    temp=temp.next;
+                }
+
+            }
+        return false;
         }
 
         //NO USES SO FAR
