@@ -10,11 +10,9 @@
 
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".DatabaseQueryAction"
         android:orientation="vertical">
 
@@ -165,15 +163,37 @@
 
 
 
-
-        <Button
-            android:id="@+id/Enter"
-            android:layout_width="190dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_gravity="center"
-            android:backgroundTint="#4DC1FF"
-            android:text="Enter"/>
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/Enter"
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="55dp"
+                android:layout_gravity="center"
+                android:backgroundTint="#4DC1FF"
+                android:text="Enter"/>
+
+            <Switch
+                android:id="@+id/SortSwitch"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:checked="true"
+                android:layout_marginLeft="10dp"
+                android:thumbTint="@color/white"
+                android:text="Sort Display"
+                android:trackTint="#4DC1FF"
+
+                />
+        </LinearLayout>
+
+
+
+
 
 
         <TextView

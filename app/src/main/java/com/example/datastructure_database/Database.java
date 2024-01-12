@@ -5,12 +5,14 @@ import android.widget.ListView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Database <T> implements Serializable {
-    public static class Node <T> implements Serializable{
+public class Database <T extends Comparable<T>> implements Serializable {
+    public static class Node <T extends Comparable <T>> implements Serializable{
             T element;
             String index;
             String type;
@@ -154,46 +156,40 @@ public class Database <T> implements Serializable {
             return false;
         }
 
-        public ListView Display(){
-
-            Node <T> temp = head;
-
-            while(temp!=null){
-                Log.d("Display()", "Displaying Index:  "+ temp.index+ "    "+ temp.element+ "     "+temp.type);
-                temp=temp.next;
-
-            }
-            //ListView listView = new ListView();
-            //TODO: Return Display Values
-
-            return null;
-        }
 
 
-
-        public List <Map<String,Object>> getHashMapValues(){
+        public List <Map<String,Object>> getHashMapValues(boolean sort){
 
            List <Map <String,Object>>listMap = new ArrayList<>();
 
 
+                if(head==null){
+                    //EMPTY DATABASE
+                    return null;
+                }else{
+                    Node<T> temp = head;
 
-            if(head==null){
-                //EMPTY DATABASE
-                return null;
-            }else{
-                Node<T> temp = head;
+                    while(temp!=null){
+                        Map <String,Object> map = new HashMap<>();
+                        map.put("Index", temp.index.toString());
+                        map.put("ValueType", temp.type.toString());
+                        map.put("Value", temp.element.toString());
+                        temp=temp.next;
 
-                while(temp!=null){
-                    Map <String,Object> map = new HashMap<>();
-                    map.put("Index", temp.index.toString());
-                    map.put("ValueType", temp.type.toString());
-                    map.put("Value", temp.element.toString());
-                    temp=temp.next;
-
-                    listMap.add(map);
+                        listMap.add(map);
+                    }
                 }
-            }
-            Log.d("listview","Values:" + listMap);
+                Log.d("listview","Values:" + listMap);
+
+               if(sort){
+                   return Sorting(listMap);
+               }
+
+
+
+
+
+
             return listMap;
         }
 
@@ -215,6 +211,17 @@ public class Database <T> implements Serializable {
 
             return true;
         }
+
+
+        public List<Map<String,Object>> Sorting(List<Map<String,Object>> listMap){
+            Comparator<Map<String, Object>> comparator = Comparator.comparing(m -> m.get("Index").toString());
+
+            // Sort the listMap using the custom Comparator
+            Collections.sort(listMap, comparator);
+
+            return listMap;
+        }
+
 
     }
 

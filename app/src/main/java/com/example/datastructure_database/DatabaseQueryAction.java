@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.SimpleAdapter;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -48,6 +49,8 @@ public class DatabaseQueryAction extends Fragment {
 
     String actionOfDatabase;
     MaterialButtonToggleGroup toggleGroup;
+    boolean sort=false;
+    Switch SwitchSort;
 
 
     @Override
@@ -89,7 +92,7 @@ public class DatabaseQueryAction extends Fragment {
         InputValue = view.findViewById(R.id.ValueEditText);
         result = view.findViewById(R.id.Result);
         requirements = view.findViewById(R.id.RequirementsText);
-
+        SwitchSort = view.findViewById(R.id.SortSwitch);
 
 
         toggleGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
@@ -136,6 +139,14 @@ public class DatabaseQueryAction extends Fragment {
                 actionOfDatabase="Retrieve";
             } else {
                actionOfDatabase=null;
+            }
+        });
+
+        SwitchSort.setOnCheckedChangeListener((buttonView, isChecked)->{
+            if(isChecked){
+                sort=true;
+            }else{
+                sort=false;
             }
         });
 
@@ -188,7 +199,7 @@ public class DatabaseQueryAction extends Fragment {
             } else if (actionOfDatabase.equals("Display")) {
                 //DISPLAY DATABASE ACTION
 
-                database.Display();
+
                 DisplayDatabase(view);
 
                 Toast.makeText(getContext(), "Successfully displayed the database", Toast.LENGTH_SHORT).show();
@@ -253,8 +264,8 @@ public class DatabaseQueryAction extends Fragment {
 
 
     public void DisplayDatabase(View view){
-        List<Map <String, Object>> listMap = database.getHashMapValues();
-        Log.d("DisplayDatabase", "getHashMapValues is returning: "+database.getHashMapValues());
+        List<Map <String, Object>> listMap = database.getHashMapValues(sort);
+        Log.d("DisplayDatabase", "getHashMapValues is returning: "+database.getHashMapValues(false));
 
             if(listMap!=null){
                 listView = view.findViewById(R.id.ListViewDatabase);
