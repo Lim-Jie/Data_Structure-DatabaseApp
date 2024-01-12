@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -193,9 +194,11 @@ public class DatabaseQueryAction extends Fragment {
                 Toast.makeText(getContext(), "Successfully displayed the database", Toast.LENGTH_SHORT).show();
 
             } else if (actionOfDatabase.equals("Clear")) {
-                //CLEAR DATABASE ACTION
 
                 if(database.clear()){
+                    SaveDatabaseObjectState(getContext(), database);
+                    //SAVE INSTANCE OF OBJECT
+
                     Toast.makeText(getContext(), "Successfully clear the database", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getContext(), "Error in Clear database ", Toast.LENGTH_SHORT).show();}
@@ -203,6 +206,9 @@ public class DatabaseQueryAction extends Fragment {
             } else if (actionOfDatabase.equals("Delete")) {
 
                 if(database.delete(IndexValue.getText().toString())){
+                    SaveDatabaseObjectState(getContext(), database);
+                    // SAVE INSTANCE OF OBJECT
+
                     Toast.makeText(getContext(), "Successfully deleted index in the database "+IndexValue.getText().toString(), Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getContext(), "Error in deleting index database "+IndexValue.getText().toString(), Toast.LENGTH_SHORT).show();}
@@ -248,6 +254,7 @@ public class DatabaseQueryAction extends Fragment {
 
     public void DisplayDatabase(View view){
         List<Map <String, Object>> listMap = database.getHashMapValues();
+        Log.d("DisplayDatabase", "getHashMapValues is returning: "+database.getHashMapValues());
 
             if(listMap!=null){
                 listView = view.findViewById(R.id.ListViewDatabase);
@@ -263,10 +270,36 @@ public class DatabaseQueryAction extends Fragment {
                 );
 
                 listView.setAdapter(adapter);
+
             }else{
-                Log.e("ListView", "ListView is null");
+                List<Map <String,Object>> listMap1 = new ArrayList<>();
+                Map <String,Object> map1 = new HashMap<>();
+                map1.put("","");
+                map1.put("","");
+                map1.put("","");
+                listMap1.add(map1);
+
+
+                listView = view.findViewById(R.id.ListViewDatabase);
+                String[] from = {"","",""};
+                int[] to = {R.id.ValueType, R.id.Value, R.id.Index};
+
+                SimpleAdapter adapter = new SimpleAdapter(
+                        getContext(),
+                        listMap1,
+                        R.layout.listview_item,
+                        from,
+                        to
+                );
+
+                listView.setAdapter(adapter);
+                //TODO: Clear the ListView
+
+
             }
     }
+
+
 
 
     public static void SaveDatabaseObjectState(Context context, Database database) {
@@ -352,7 +385,18 @@ public class DatabaseQueryAction extends Fragment {
 
 
         if (returnValueType.equals("String")) {
-            return element instanceof String;
+            if((element instanceof String)){
+
+                try {
+                    // Try to parse the string as an integer
+                    Integer.parseInt((String) element);
+                    return false;
+                } catch (NumberFormatException e) {
+                    // Not a valid integer
+                    return true;
+                }
+
+            }else{ return false;}
         } else if (returnValueType.equals("Character")) {
             if (element instanceof Character) {
                 return true;

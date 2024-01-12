@@ -200,24 +200,20 @@ public class Database <T> implements Serializable {
 
         public boolean clear(){
 
-            try{
-                Node<T> temp= head;
-                while(temp!=null){
-                    Node <T> next= temp.next;
 
-                    //ENSURE ALL MEMORY IS CLEARED RATHER THAN INSTANTIATING HEAD AND TAIL NULL
-                    temp.prev=null;
-                    temp.next=null;
-                    temp= next;
-                }
-                head=null;
-                tail=null;
+            Node<T> temp= head;
+            while(temp!=null){
+                Node <T> next= temp.next;
 
-                return true;
-            }catch(Exception e){
-                System.out.println(e);
+                //ENSURE ALL MEMORY IS CLEARED RATHER THAN INSTANTIATING HEAD AND TAIL NULL
+                temp.prev=null;
+                temp.next=null;
+                temp= next;
             }
-            return false;
+            head=null;
+            tail=null;
+
+            return true;
         }
 
     }
