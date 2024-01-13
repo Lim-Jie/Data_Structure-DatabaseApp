@@ -83,6 +83,7 @@ public class Database <T> implements Serializable {
                 }
                 temp1 = null;
 
+                size--;
                 return true;
 
             } else if (tail.index.equals(index)) {
@@ -92,7 +93,7 @@ public class Database <T> implements Serializable {
                     tail.next = null;
                 }
                 temp1 = null;
-
+                size--;
                 return true;
             } else {
                 Node<T> temp = head;
@@ -112,6 +113,7 @@ public class Database <T> implements Serializable {
                         }
 
                         temp = null;
+                        size--;
                         Log.d("delete()", "Successfully deleted" + currentIndex);
                         return true;
                     }
@@ -243,6 +245,7 @@ public class Database <T> implements Serializable {
             }
             head=null;
             tail=null;
+            size=0;
 
             return true;
         }
