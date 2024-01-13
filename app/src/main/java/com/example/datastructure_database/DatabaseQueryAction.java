@@ -177,6 +177,7 @@ public class DatabaseQueryAction extends Fragment {
                     errorOccurred = true;
                 }
 
+
                 if (!IsToggleButtonActivated()) {
                     requirements.setText("Please select data type to insert");
                     errorOccurred = true;
