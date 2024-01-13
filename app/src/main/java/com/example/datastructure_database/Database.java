@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Database <T extends Comparable<T>> implements Serializable {
-    public static class Node <T extends Comparable <T>> implements Serializable{
+public class Database <T> implements Serializable {
+    public static class Node <T > implements Serializable{
             T element;
             String index;
             String type;
@@ -68,33 +68,62 @@ public class Database <T extends Comparable<T>> implements Serializable {
             return ValueFound;
         }
 
-        public boolean delete(String index ){
-            Node<T> temp=head;
+    public boolean delete(String index) {
+        if (head == null) {
+            Log.d("Delete()", "Head is null");
+            return false;
+        } else {
+            String currentIndex = null;
 
-            if(head==null){
-                Log.d("Delete()","Head is returning null");
-                return false;
-            }else{
-                while(temp!=null){
-                    String CurrentIndex= temp.index;
+            if (head.index.equals(index)) {
+                Node<T> temp1 = head;
+                head = head.next;
+                if (head != null) {
+                    head.prev = null;
+                }
+                temp1 = null;
 
-                    if(CurrentIndex.equals(index.trim())){
-                        Log.d("delete()", "Element found in Index"+temp.index);
-                        temp.prev.next=temp.next;
-                        temp.next.prev= temp.prev;
-                        temp=null;
-                        Log.d("delete()", "Successfully deleted"+temp.index+" with value "+temp.element);
+                return true;
 
+            } else if (tail.index.equals(index)) {
+                Node<T> temp1 = tail;
+                tail = tail.prev;
+                if (tail != null) {
+                    tail.next = null;
+                }
+                temp1 = null;
+
+                return true;
+            } else {
+                Node<T> temp = head;
+
+                while (temp != null) {
+                    currentIndex = temp.index;
+
+                    if (currentIndex.equals(index.trim())) {
+                        Log.d("delete()", "Element found in Index" + temp.index);
+
+                        if (temp.prev != null) {
+                            temp.prev.next = temp.next;
+                        }
+
+                        if (temp.next != null) {
+                            temp.next.prev = temp.prev;
+                        }
+
+                        temp = null;
+                        Log.d("delete()", "Successfully deleted" + currentIndex);
                         return true;
                     }
-                    temp=temp.next;
+                    temp = temp.next;
                 }
-
             }
-        return false;
+            return false;
         }
+    }
 
-        //NO USES SO FAR
+
+    //NO USES SO FAR
         public String findValueType(T element) {
 
             if (element instanceof String) {
@@ -122,9 +151,15 @@ public class Database <T extends Comparable<T>> implements Serializable {
                     head = temp;
                     tail = temp;
                 } else {
+                    Node<T> traverse = head;
+
+                    while(traverse.next!=null){
+                        traverse= traverse.next;
+                    }
+                    traverse.next=temp;
                     temp.prev=tail;
-                    tail.next = temp;
-                    tail = temp;
+                    tail=temp;
+
 
                 }
                 size++;
@@ -220,6 +255,11 @@ public class Database <T extends Comparable<T>> implements Serializable {
             Collections.sort(listMap, comparator);
 
             return listMap;
+        }
+
+        public String getSize(){
+            String sizeValue = String.valueOf(size);
+            return sizeValue;
         }
 
 

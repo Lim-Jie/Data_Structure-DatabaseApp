@@ -137,7 +137,9 @@ public class DatabaseQueryAction extends Fragment {
             } else if (checkedId == R.id.Retrieve) {
                 SetTextEmpty();
                 actionOfDatabase="Retrieve";
-            } else {
+            } else if(checkedId==R.id.GetSize){
+                actionOfDatabase="GetSize";
+            }else{
                actionOfDatabase=null;
             }
         });
@@ -234,7 +236,11 @@ public class DatabaseQueryAction extends Fragment {
             }else{
                     Toast.makeText(getContext(), "Error in retrieving index database "+IndexValue.getText().toString(), Toast.LENGTH_SHORT).show();}
 
-            } else {
+            } else if(actionOfDatabase.equals("GetSize")){
+                result.setText(database.getSize());
+                Toast.makeText(getContext(), "Successfully retrieved size:  ", Toast.LENGTH_SHORT).show();
+
+            } else{
                 requirements.setText("Enter a valid Action");
             }
 
